@@ -9,12 +9,12 @@ robomuse_diff:
   # Wheel separation and diameter. These are both optional.
   # diff_drive_controller will attempt to read either one or both from the
   # URDF if not specified as a parameter
-  wheel_separation : 0.45 # meters
-  wheel_radius : 0.0637    # meters
+  wheel_separation : 0.435 # meters
+  wheel_radius : 0.062025 # meters
 
   # Wheel separation and radius multipliers
-  wheel_separation_multiplier: 1.0 # default: 1.0
-  wheel_radius_multiplier    : 1.0 # default: 1.0
+  wheel_separation_multiplier: 0.9655  # default: 1.0
+  wheel_radius_multiplier    : 1.0737 # default: 1.0
 
   # Velocity commands timeout [s], default 0.5
   cmd_vel_timeout: 0.5
@@ -28,7 +28,7 @@ robomuse_diff:
     x:
       has_velocity_limits    : false
       max_velocity           : 50.0 #1.0  # m/s
-      has_acceleration_limits: true
+      has_acceleration_limits: false
       max_acceleration       : 5.0 #0.8  # m/s^2
       has_jerk_limits        : false
  

@@ -4,6 +4,7 @@
 #include <hardware_interface/joint_state_interface.h>
 #include <hardware_interface/robot_hw.h>
 #include <joint_state_controller/joint_state_controller.h>
+#include <std_msgs/Int32.h>
 #include <std_msgs/Float32.h>
 
 
@@ -42,8 +43,15 @@ public:
     std_msgs::Float32 right_wheel_vel_msg;
     left_wheel_vel_msg.data = diff_ang_speed_left;
     right_wheel_vel_msg.data = diff_ang_speed_right;
+    left_wheel_vel_pub_.publish(left_wheel_vel_msg);
+    right_wheel_vel_pub_.publish(right_wheel_vel_msg);
+
+
 
   }
+
+
+
 
 
 
@@ -55,8 +63,8 @@ public:
    void read(const ros::Duration &period) {
 
 
-     double ang_distance_left = _wheel_angle[0];
-     double ang_distance_right = _wheel_angle[1];
+     double ang_distance_left = (_wheel_angle[0]*0.0024697248*0.960);
+     double ang_distance_right =(_wheel_angle[1]*0.0024697248*0.960);   //0001622*factor
        pos[0] += ang_distance_left;
        vel[0] += ang_distance_left / period.toSec();
        pos[1] += ang_distance_right;
@@ -75,6 +83,14 @@ public:
      return curr_update_time - prev_update_time;
    }
 
+   /*pos[0]=0;
+   pos[1]=0;
+   vel[0]=0;
+   vel[1]=0;
+   eff[0]=0;
+   eff[1]=0;
+   */
+
 private:
   ros::NodeHandle nh;
 
@@ -87,22 +103,19 @@ private:
   double eff[2];
   double _wheel_angle[2];
 
+
   //double ang_distance_left_old=0;
   //double ang_distance_right_old=0;
 
 
   ros::Time curr_update_time, prev_update_time;
 
-  //ros::Subscriber left_wheel_angle_sub_;
-  //ros::Subscriber right_wheel_angle_sub_;
-  //ros::Publisher left_wheel_vel_pub_;
-  //ros::Publisher right_wheel_vel_pub_;
 
-  void leftWheelAngleCallback(const std_msgs::Float32& msg) {
+  void leftWheelAngleCallback(const std_msgs::Int32& msg) {
     _wheel_angle[0] = msg.data;
   }
 
-  void rightWheelAngleCallback(const std_msgs::Float32& msg) {
+  void rightWheelAngleCallback(const std_msgs::Int32& msg) {
     _wheel_angle[1] = msg.data;
   }
 
